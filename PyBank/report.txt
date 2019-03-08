@@ -1,0 +1,118 @@
+# Requirements : 
+""" 
+This is multiline comment : 
+
+Financial Analysis
+----------------------------
+A : Total Months: 86
+B : Total: $38382578
+C : Average Change: -2315.12
+D : Greatest Increase in Profits: Feb-12 ($1926159)
+E : Greatest Decrease in Profits: Sep-13 ($-2196167)
+-----------------------------------------------------
+# Evaluation: 
+    We would need three lists : months, revenue and revenue_change
+    A can be calculated as length of list months : len(months)
+    B can be calculated as sum of list revenue   : sum(revenue)
+    C can be calculated as sum of revenue_change / total changes :  sum(revenue_change)/len(revenue_change)
+    D - This required two things : greatest increase in profit and month of greatest increase in profit
+         Greatest increase in profit :  max(revenue_change)
+         Month of greatest increase in profit : This will be equal to index of maximum revenue_change
+                                        index ---> revenue_change.index(max(revenue_change)
+                                        month of corresponding index  : months[index]
+    E - This will be calculated similarly as D.
+
+--------------------------------------------------------
+"""
+
+# Import Libraries
+
+import csv
+import os
+
+# Create empty lists
+
+months = []
+revenue = []
+revenue_change = []
+
+# Read the csv file and put contents into variable. 
+
+with open("budget_data.csv") as csvfile:
+    csvreader = csv.reader(csvfile, delimiter=',')
+
+# Skip the first line and move the header
+    header = next(csvreader)
+
+# Append the items of Date column and Profit/Loss column into corresponding lists; the append() method takes a single item and adds it to the end of the list.
+# the item can be numbers, strings, another list, dictinary, etc.
+# Date(row[0]); the date row starts at first colunm as 0 --> months
+# Profit/Losses(row[1]) column--> revenue
+
+    for row in csvreader: 
+        months.append(row[0])
+        revenue.append(int(row[1]))
+
+# Testing if items got appended on list by printing them. Can be commented out later.
+# This can help answers to A and B.
+
+    print(" List of months : "  + str(months))
+    print("==================================")
+    print(" List of profit : " + str(revenue))
+    
+
+
+# Getting items for revenue_change list
+# Revenue change is  bottom row of profit column [i+1]  -  Upper row of profit column [i]
+# This will require range function and will iterate to length(profit) -1
+    for i in range(len(revenue) - 1):
+        revenue_change.append(revenue[i+1] - revenue[i])
+
+# Testing items in revenue_change list by printing. Can be commented out later.
+# This can help us calculate answer of C
+    print("===========================================================")
+    print(" List of revenue or profit change : "  + str(revenue_change))
+    avgchangeinrevenue = sum(revenue_change)/len(revenue_change)
+    print(" Average change in revenue is : " + str(avgchangeinrevenue))
+
+# Once we get list of revenue_change, we can get max revenue increase and max revenue decrease by using max and min function 
+# on revenue_change list.
+# Storing max revenue increase and decrease in variable.
+
+    maxrevinc = max(revenue_change)
+    maxrevdec = min(revenue_change)
+# Testing above code
+    print("================================================")
+    print("Max revenue increase is $" + str(maxrevinc))
+    print("Max revenue decrease is $" + str(maxrevdec))
+
+
+# Finding month of max revenue increase and decrease
+# For this we need index of profit column for value of max profit increase/decrease  so that we can get corresponding month
+# Using variables to store index and months
+
+    revincindex = revenue_change.index(maxrevinc) + 1
+    revdecindex = revenue_change.index(maxrevdec) + 1
+# Testing above code
+    print("Index of revenue increase : " + str(revincindex))
+    print("Index of revenue decrease : " + str(revdecindex))
+
+# Once we get index, we can calculate corresponding months
+
+    monthofmaxrevinc = months[revincindex]
+    monthofmaxrevdec = months[revdecindex]
+
+# Testing above code
+    print("Month of max revenue increase : " + str(monthofmaxrevinc))
+    print("Month of max revenue decrease : " + str(monthofmaxrevdec))
+
+# Now we get all items for printing financial report
+    print("==================================================================")
+    print("Financial Analysis")
+    print("==================================================================")
+    print("Total Months: " + str(len(months)))
+    print("Total Revenue: " +"$" +str(sum(revenue))) 
+    # Avg change caculated above
+    print("Average Change in Revenue Change: " +"$"+ str(round(avgchangeinrevenue,2)))
+    print("Greatest Increase in Revenue: " + str(maxrevinc) + "$ " + str(monthofmaxrevinc))
+    print("Greatest Decrease in Revenue: " + str(maxrevdec) + "$ " + str(monthofmaxrevdec))
