@@ -1,0 +1,14 @@
+kim.harlan@2030007916 MINGW64 ~/Desktop/UCBBEL201902DATA2 (master)
+$ python myscript2.py
+CSV Header: ['Voter ID', 'County', 'Candidate']
+Election Results
+-------------------------------
+Total Votes: 1048575
+-------------------------------
+Khan: 63% 661583
+Correy: 19% 870629
+Li: 13% 1016989
+O'Tooley: 3% 1048575
+-------------------------------
+Winner: Khan
+-------------------------------
